@@ -1,0 +1,9 @@
+bitsandbytes
+accelerate
+langchain-community
+faiss-cpu
+langchain_core
+trafilatura
+langchain-text-splitters
+tiktoken
+sentence_transformers
