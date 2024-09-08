@@ -6,12 +6,12 @@
 
 ```
 !wget ＜利用したいGGUF＞
-!CMAKE_ARGS="-DLLAMA_CUDA=on" FORCE_CMAKE=1 pip install -U llama_cpp_python
 ```
 
 # 必要なライブラリをダウンロード
 
 ```
+!CMAKE_ARGS="-DLLAMA_CUDA=on" FORCE_CMAKE=1 pip install -U llama_cpp_python
 !pip install 'git+https://github.com/huggingface/transformers.git'
 !pip install -U -r requirements,txt
 ```
