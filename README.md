@@ -16,7 +16,7 @@
 !pip install -U -r requirements,txt
 ```
 
-# ollmaをコラボで使うときの準備
+# ollmaをColabで使うときの準備
 
 ## 利用したいモデルを準備
 
