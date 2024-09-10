@@ -13,7 +13,7 @@
 ```
 !CMAKE_ARGS="-DLLAMA_CUDA=on" FORCE_CMAKE=1 pip install -U llama_cpp_python
 !pip install 'git+https://github.com/huggingface/transformers.git'
-!pip install -U -r requirements,txt
+!pip install -U -r requirements.txt
 ```
 
 # ollmaをColabで使うときの準備
