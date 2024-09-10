@@ -50,14 +50,9 @@ _filepath = './Modelfile'
 filecontents = """
 FROM ./<ダウンロードしたモデル>
 
-TEMPLATE \"\"\"{{ if .System }}<|system|>
-{{ .System }}<|end|>
-{{ end }}{{ if .Prompt }}<|user|>
-{{ .Prompt }}<|end|>
-{{ end }}<|assistant|>
-{{ .Response }}<|end|> \"\"\"
+TEMPLATE \"\"\"　使うモデルのプロンプトテンプレート \"\"\"
 
-PARAMETER stop  "<|endoftext|>"
+PARAMETER stop  "使うモデルのstopトークン"
 
 """
 
