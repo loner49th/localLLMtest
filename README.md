@@ -76,7 +76,7 @@ with open(_filepath, 'w') as f:
 !pip install ollama
 ```
 
-### Whisperを使うとき
+# Whisperを使うときの準備
 
 ```
 !pip install --upgrade pip
