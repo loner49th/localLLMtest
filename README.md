@@ -76,3 +76,9 @@ with open(_filepath, 'w') as f:
 !pip install ollama
 ```
 
+### Whisperを使うとき
+
+```
+!pip install --upgrade pip
+!pip install --upgrade git+https://github.com/huggingface/transformers.git accelerate
+```
