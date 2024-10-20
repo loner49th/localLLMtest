@@ -29,7 +29,7 @@
 ```
 !curl -fsSL https://ollama.com/install.sh | sh
 !nohup ollama serve &
-!ollama pull command-r-plus
+!ollama pull <利用したいモデル>
 ```
 
 ## 必要なPythonライブラリをインストール
