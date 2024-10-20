@@ -27,47 +27,9 @@
 ## 必要なソフトウェアをインストール
 
 ```
-!curl https://ollama.ai/install.sh | sh
-
-!echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections
-!sudo apt-get update && sudo apt-get install -y cuda-drivers
-
-import os
-
-# Set LD_LIBRARY_PATH so the system NVIDIA library
-os.environ.update({'LD_LIBRARY_PATH': '/usr/lib64-nvidia'})
-
-```
-
-## プロンプトテンプレートやストップトークンを指定するModelfileを作成する
-
-```
-
-# ファイルパス
-_filepath = './Modelfile'
-
-# ファイルに書き込む内容
-filecontents = """
-FROM ./<ダウンロードしたモデル>
-
-TEMPLATE \"\"\"　使うモデルのプロンプトテンプレート \"\"\"
-
-PARAMETER stop  "使うモデルのstopトークン"
-
-"""
-
-# 書き込みモード
-with open(_filepath, 'w') as f:
-  # ファイル作成、書き込み
-  f.write(filecontents)
-```
-
-## ollamaを実行
-
-```
-# 以下のコマンドをterminalで実行
+!curl -fsSL https://ollama.com/install.sh | sh
 !nohup ollama serve &
-!ollama create <model名> -f Modelfile
+!ollama pull command-r-plus
 ```
 
 ## 必要なPythonライブラリをインストール
