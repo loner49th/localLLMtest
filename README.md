@@ -30,6 +30,9 @@
 !curl -fsSL https://ollama.com/install.sh | sh
 !nohup ollama serve &
 !ollama pull <利用したいモデル>
+
+# Hugging Face HubのGGUFモデルを利用する場合
+!ollama pull hf.co/<ユーザー名>/<リポジトリ名>
 ```
 
 ## 必要なPythonライブラリをインストール
