@@ -32,7 +32,7 @@ from langchain_core.prompts.chat import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_community.vectorstores.faiss import FAISS
 
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface.embeddings import HuggingFaceEmbeddings
 
 embeddings = HuggingFaceEmbeddings(model_name="intfloat/multilingual-e5-base")
 

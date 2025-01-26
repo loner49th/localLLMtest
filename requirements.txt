@@ -7,3 +7,4 @@ trafilatura
 langchain-text-splitters
 tiktoken
 sentence_transformers
+langchain_huggingface
