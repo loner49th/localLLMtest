@@ -1,30 +1,28 @@
-# RAG用のデータの取得
+# 以下の処理で、Doclingのモデルのパスを指定できる
+# !export DOCLING_ARTIFACTS_PATH=<保存先のパス>
 
-from trafilatura import fetch_url, extract
+from docling.utils.model_downloader import download_models
+download_models()
 
-url = <RAGの下とするURL>
-filename = 'textfile.txt'
+from docling.datamodel.base_models import InputFormat
+from docling.datamodel.pipeline_options import PipelineOptions
+from docling.document_converter import DocumentConverter,HTMLFormatOption
+from langchain_docling import DoclingLoader
 
-document = fetch_url(url)
-text = extract(document)
 
-with open(filename, 'w', encoding='utf-8') as f:
-    f.write(text)
+artifacts_path = '<保存先のパス>'
 
-# 取得したデータをチャンク化する
-from langchain_community.document_loaders.text import TextLoader
-from langchain_text_splitters import CharacterTextSplitter
-
-loader = TextLoader(filename, encoding='utf-8')
-documents = loader.load()
-
-text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
-    separator = "\n",
-    chunk_size=800,
-    chunk_overlap=100,
+pipeline_options = PipelineOptions(artifacts_path=artifacts_path)
+doc_converter = DocumentConverter(
+    format_options={
+        InputFormat.HTML: HTMLFormatOption(pipeline_options=pipeline_options)
+    }
 )
-texts = text_splitter.split_documents(documents)
 
+url = "<RAGしたいURLのパス>"
+
+loader = DoclingLoader(file_path=url,converter=doc_converter)
+texts = loader.load()
 
 # 埋込みモデルの準備
 
