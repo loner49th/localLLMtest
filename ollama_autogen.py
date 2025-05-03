@@ -1,7 +1,8 @@
 
 from autogen_agentchat.agents import AssistantAgent
 from autogen_ext.models.ollama import OllamaChatCompletionClient
-from autogen_core.models import ModelFamily, ModelInfo
+from autogen_core.models import ModelFamily
+from autogen_agentchat.ui import Console
 
 # https://github.com/microsoft/autogen/blob/main/python/packages/autogen-ext/src/autogen_ext/models/ollama/_model_info.pyに含まれていないモデルを追加する場合は、設定が必要
 model_info={                       # 必須のモデル情報
@@ -35,7 +36,13 @@ max_message_termination =  MaxMessageTermination(6)
 
 # Create a team with the primary and critic agents.
 team = RoundRobinGroupChat([firstAgent, secondAgent], termination_condition=max_message_termination)
-result = await team.run(task="タスクをここに記入")
 
-for message in result.messages:
-    print(message)
+# Run the agent and stream the messages to the console.
+async def main() -> None:
+    await Console(team.run_stream(task="タスクをここに記入"))
+    # Close the connection to the model client.
+    await ollama_model_client.close()
+
+
+# NOTE: if running this inside a Python script you'll need to use asyncio.run(main()).
+await main()
