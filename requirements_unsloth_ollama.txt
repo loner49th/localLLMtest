@@ -1,0 +1,16 @@
+pymupdf
+unsloth
+trl
+transformers
+accelerate
+peft
+bitsandbytes
+xformers==0.0.29.post3
+triton
+cut_cross_entropy
+unsloth_zoo
+sentencepiece
+protobuf
+datasets>=3.4.1,<4.0.0
+huggingface_hub>=0.34.0
+hf_transfer
