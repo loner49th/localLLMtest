@@ -81,16 +81,6 @@ def ask_ollama(context, model, n=5, temperature=0.2):
         - answerable=falseの場合は回答不能と判定
         - quality=1-5で品質を自己評価
     """
-    schema = {
-        "type":"object",
-        "properties":{
-        "question":{"type":"string"},
-        "answer":{"type":"string"},
-        "answerable":{"type":"string"},
-        "quality":{"type":"string"}
-        },
-        "required":["question","answer","answerable","quality"]
-    }
     sys = (
       "あなたは日本語QAデータ生成器。"
       "与えられた抜粋『のみ』に基づき、思考過程は出力しない。"
