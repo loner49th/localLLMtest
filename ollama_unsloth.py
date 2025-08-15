@@ -380,7 +380,6 @@ def test_generation(model, tokenizer, test_message="テスト用のメッセー�
         tokenizer: トークナイザー
         test_message: テスト用のメッセージ
     """
-    print("ファインチューニング完了。テスト生成を開始...")
     messages = [
         {"role" : 'user', 'content' : test_message}
     ]
@@ -418,8 +417,8 @@ def run_inference_only(model_path, test_message):
     print(f"保存済みモデルを {model_path} から読み込み中...")
     
     # 保存済みモデルとトークナイザーを読み込み
-    model = FastModel.from_pretrained(model_path)
-    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    # FastModel.from_pretrainedはタプル(model, tokenizer)を返す
+    model, tokenizer = FastModel.from_pretrained(model_path)
     
     print("モデル読み込み完了。推論を開始します...")
     
