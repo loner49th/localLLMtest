@@ -241,18 +241,28 @@ def main():
     LEARNING_RATE = 5e-5
     OUTPUT_DIR = "outputs"
     
+    # モデル保存設定
+    SAVE_MODEL_PATH = "fine_tuned_model"
+    
     # テストメッセージ
     TEST_MESSAGE = "テスト用のメッセージ"
+    
+    # 実行モード選択
+    TRAIN_MODE = True  # True: ファインチューニング実行, False: 保存済みモデルで推論のみ
     # ============================
     
-    # PDFからJSONLデータを生成
-    count = build_messages_from_pdf(PDF_PATH, JSONL_PATH, OLLAMA_MODEL)
-    print(f"生成されたQAペア数: {count}")
-    
-    # Unslothによるファインチューニング処理
-    run_fine_tuning(JSONL_PATH, UNSLOTH_MODEL, MAX_SEQ_LENGTH, BATCH_SIZE, MAX_STEPS, LEARNING_RATE, OUTPUT_DIR, TEST_MESSAGE)
+    if TRAIN_MODE:
+        # PDFからJSONLデータを生成
+        count = build_messages_from_pdf(PDF_PATH, JSONL_PATH, OLLAMA_MODEL)
+        print(f"生成されたQAペア数: {count}")
+        
+        # Unslothによるファインチューニング処理
+        run_fine_tuning(JSONL_PATH, UNSLOTH_MODEL, MAX_SEQ_LENGTH, BATCH_SIZE, MAX_STEPS, LEARNING_RATE, OUTPUT_DIR, SAVE_MODEL_PATH, TEST_MESSAGE)
+    else:
+        # 保存済みモデルで推論のみ実行
+        run_inference_only(SAVE_MODEL_PATH, TEST_MESSAGE)
 
-def run_fine_tuning(jsonl_path, model_name, max_seq_length, batch_size, max_steps, learning_rate, output_dir, test_message):
+def run_fine_tuning(jsonl_path, model_name, max_seq_length, batch_size, max_steps, learning_rate, output_dir, save_model_path, test_message):
     """
     Unslothを使用したファインチューニング処理
     
@@ -264,6 +274,7 @@ def run_fine_tuning(jsonl_path, model_name, max_seq_length, batch_size, max_step
         max_steps: 最大ステップ数
         learning_rate: 学習率
         output_dir: 出力ディレクトリ
+        save_model_path: ファインチューニング後のモデル保存パス
         test_message: テスト用メッセージ
     """
     from unsloth import FastModel
@@ -351,6 +362,12 @@ def run_fine_tuning(jsonl_path, model_name, max_seq_length, batch_size, max_step
 
     trainer_stats = trainer.train()
     
+    # モデルを保存
+    print(f"モデルを {save_model_path} に保存中...")
+    model.save_pretrained(save_model_path)
+    tokenizer.save_pretrained(save_model_path)
+    print("モデル保存完了")
+    
     # ファインチューニング完了後のテスト
     test_generation(model, tokenizer, test_message)
 
@@ -380,6 +397,34 @@ def test_generation(model, tokenizer, test_message="テスト用のメッセー�
         temperature = 1, top_p = 0.95, top_k = 64,
         streamer = TextStreamer(tokenizer, skip_prompt = True),
     )
+
+def run_inference_only(model_path, test_message):
+    """
+    保存済みファインチューニングモデルで推論のみを実行する関数
+    
+    Args:
+        model_path (str): 保存されたモデルのパス
+        test_message (str): テスト用メッセージ
+    
+    Note:
+        - ファインチューニング済みのモデルとトークナイザーを読み込み
+        - 推論のみを実行（学習処理はスキップ）
+        - CUDAが利用可能な場合は自動でGPUを使用
+    """
+    from unsloth import FastModel
+    from transformers import AutoTokenizer
+    import torch
+    
+    print(f"保存済みモデルを {model_path} から読み込み中...")
+    
+    # 保存済みモデルとトークナイザーを読み込み
+    model = FastModel.from_pretrained(model_path)
+    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    
+    print("モデル読み込み完了。推論を開始します...")
+    
+    # テスト生成を実行
+    test_generation(model, tokenizer, test_message)
 
 if __name__ == "__main__":
     main()
